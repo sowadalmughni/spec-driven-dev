@@ -2,7 +2,9 @@
 
 This reference is used during Audit Mode. For each failure mode, the skill runs the listed detection checks and adds confirmed findings to the remediation register.
 
-These are not hypothetical. They are the patterns that cause founders to spend 18 days building in isolation only to discover the codebase cannot be continued — and to pay $5,000 to $50,000 for a rescue engagement.
+These are not hypothetical. They are the patterns most commonly seen in AI-assisted builds that looked feature-complete but turned out to need a rescue engagement the first time someone tried to extend them — often at a cost well beyond the original build.
+
+> **Shell portability:** the detection scripts below use bash/POSIX utilities (`grep -P`, `awk`, `sed`) and run as-is on macOS/Linux and on Windows via WSL or Git Bash. On a PowerShell-only Windows environment, either run them through Git Bash/WSL if available, or translate using the bash → PowerShell patterns in `./reference/atomic-prompt-structure.md § Shell Portability`. The `psql` commands are shell-agnostic — the SQL itself doesn't change.
 
 ---
 
@@ -82,7 +84,7 @@ grep -rn "export class.*Controller" ./src --include="*.ts"
 
 **What it looks like:** Supabase or Postgres tables contain user data with no RLS policies. The application uses an anonymous public key in client-side code. Any user, authenticated or not, can query any row.
 
-**Documented consequence:** 88% of AI-generated applications using Supabase had RLS disabled or misconfigured as of early 2026. One researcher found 170 critical security failures in 1,645 publicly listed apps.
+**Why this matters:** disabled or misconfigured Row Level Security is one of the most frequently reported categories of security failure in AI-generated Supabase/Postgres apps — without it, the anon key used in client-side code can read or write any row in the table, for any user, with no auth check at all.
 
 **Detection:**
 ```bash
@@ -117,7 +119,7 @@ grep -rn "SUPABASE_ANON_KEY\|supabaseAnonKey\|anon" ./src --include="*.tsx" --in
 
 **What it looks like:** A list endpoint fetches N parent records, then issues N individual queries for child records inside a loop. At prototype scale (10 records), imperceptible. At production scale (10,000 records), it exhausts the database connection pool in seconds.
 
-**Documented consequence:** Unoptimized AI-generated queries have inflated cloud infrastructure bills by up to 400% at production scale. A single AI-generated admin dashboard caused $12,000 in database costs in one month.
+**Why this matters:** N+1 patterns are invisible at prototype scale (tens of rows) and become expensive fast at production scale (thousands or more) — connection pool exhaustion and a sharp jump in database compute cost are the most commonly reported outcomes once real traffic arrives.
 
 **Detection:**
 ```bash

@@ -22,6 +22,8 @@ _In two sentences: what architectural pattern was chosen and why. This justifies
 
 _Every file that will be created or modified. Exact paths. No "etc." or implied files._
 
+> Shown below as a Node/NestJS/TypeORM reference example. Replace file names and layout with whatever matches this project's actual language, framework, and existing conventions — the requirement is explicit paths and clear module boundaries, not this specific framework.
+
 ```
 src/
 ├── modules/
@@ -49,6 +51,8 @@ src/
 ## Data Model
 
 _Complete schema. Every table, every column, every type, every constraint, every index. No columns added during implementation without a schema amendment._
+
+> Shown below in Postgres SQL with Row Level Security as the reference example. If the project uses a different database or access-control model, translate the same requirements — explicit schema, explicit indexes, explicit row-level authorization — into that system's equivalent.
 
 ### Table: `[table_name]`
 
@@ -81,6 +85,8 @@ CREATE POLICY "[table]_user_isolation" ON [table_name]
 ## API Contracts
 
 _Every endpoint. Every method. Every request shape. Every response shape. Every error code. This is the contract the frontend and the backend both sign._
+
+> Shown below in TypeScript/REST as the reference example. Adapt the shapes to the project's actual API style (REST, GraphQL, RPC) and language.
 
 ### `POST /api/[resource]`
 

@@ -85,6 +85,21 @@ Task: [N] of [total]"
 
 ---
 
+## Shell Portability
+
+VERIFY commands above are written for a POSIX shell (bash/zsh) — native on macOS and Linux, and available on Windows via WSL or Git Bash. If the project's terminal is PowerShell-only, translate each pattern instead of assuming bash is present:
+
+| Bash pattern | PowerShell equivalent |
+|---|---|
+| `test -f ./path && echo "PASS" \|\| echo "FAIL"` | `if (Test-Path ./path) { "PASS" } else { "FAIL" }` |
+| `grep -n "pattern" ./file` | `Select-String -Path ./file -Pattern "pattern"` |
+| `command && echo "PASS" \|\| echo "FAIL"` | Run `command`, then `if ($LASTEXITCODE -eq 0) { "PASS" } else { "FAIL" }` |
+| `npx tsc --noEmit && echo "PASS" \|\| echo "FAIL"` | `npx tsc --noEmit; if ($LASTEXITCODE -eq 0) { "PASS" } else { "FAIL" }` |
+
+Generate whichever form matches the shell the project's terminal actually uses. Do not default to bash in a Windows-only project.
+
+---
+
 ## Anti-Patterns: Prompts That Are Not Atomic
 
 These are failure modes. If a prompt contains any of the following, it must be split.

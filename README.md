@@ -2,7 +2,7 @@
 
 A Claude Code skill that enforces architecture-first development before generating any implementation code.
 
-**The problem it solves:** AI tools generate code faster than any human can type. But generating code is not the same as building software. A founder can spend 18 days building a product with AI assistance and end up with:
+**The problem it solves:** AI tools generate code faster than any human can type. But generating code is not the same as building software. A founder can spend days building a product with AI assistance and end up with:
 
 - A database schema that is never connected to the application
 - Frontend pages that are fully styled but call no API
